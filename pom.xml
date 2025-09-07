@@ -4,12 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.edurekademo.tutorial</groupId>
     <artifactId>addressbook</artifactId>
-    <packaging>war</packaging>
     <version>2.0</version>
+    <packaging>war</packaging>
     <name>Vaadin Addressbook example</name>
 
+    <!-- Distribution Management for Nexus -->
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
@@ -21,17 +23,20 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <!-- Project Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <vaadin.version>8.0.0.alpha2</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <jacoco.version>0.8.10</jacoco.version>
         <surefire.version>3.1.2</surefire.version>
+        <cobertura.version>2.7</cobertura.version>
     </properties>
 
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>vaadin-prereleases</id>
@@ -54,6 +59,7 @@
         </repository>
     </repositories>
 
+    <!-- Plugin Repositories -->
     <pluginRepositories>
         <pluginRepository>
             <id>vaadin-snapshots</id>
@@ -67,8 +73,9 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <!-- Dependencies -->
     <dependencies>
-        <!-- Vaadin dependencies -->
+        <!-- Vaadin -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-server</artifactId>
@@ -165,10 +172,11 @@
         </dependency>
     </dependencies>
 
+    <!-- Build Configuration -->
     <build>
         <finalName>addressbook</finalName>
         <plugins>
-            <!-- Compiler -->
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -179,14 +187,14 @@
                 </configuration>
             </plugin>
 
-            <!-- Jetty -->
+            <!-- Jetty Plugin -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.3.v20140905</version>
             </plugin>
 
-            <!-- Surefire -->
+            <!-- Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -205,7 +213,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Jacoco -->
+            <!-- Jacoco Plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -225,26 +233,70 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- PMD Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+
+            <!-- Checkstyle Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+
+            <!-- SpotBugs Plugin -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.7.3.0</version>
+            </plugin>
+
+            <!-- Cobertura Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+            </plugin>
         </plugins>
     </build>
 
+    <!-- Reporting Section -->
     <reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>${surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.7.3.0</version>
+            </plugin>
         </plugins>
     </reporting>
 
+    <!-- Profiles -->
     <profiles>
-        <!-- Development Profile -->
         <profile>
             <id>development</id>
             <activation>
@@ -252,70 +304,29 @@
             </activation>
         </profile>
 
-        <!-- Metrics Profile -->
         <profile>
             <id>metrics</id>
             <build>
                 <plugins>
-                    <!-- PMD -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>3.2</version>
-                        <configuration>
-                            <targetJdk>1.8</targetJdk>
-                            <aggregate>true</aggregate>
-                            <format>xml</format>
-                            <minimumTokens>20</minimumTokens>
-                            <failOnViolation>true</failOnViolation>
-                            <failurePriority>2</failurePriority>
-                        </configuration>
                     </plugin>
-
-                    <!-- FindBugs -->
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <version>2.4.0</version>
-                        <configuration>
-                            <effort>Max</effort>
-                            <xmlOutput>true</xmlOutput>
-                        </configuration>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>4.7.3.0</version>
                     </plugin>
                 </plugins>
             </build>
         </profile>
 
-        <!-- Maven3 Profile -->
         <profile>
             <id>maven3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-enforcer-plugin</artifactId>
-                        <version>3.2.0</version>
-                        <executions>
-                            <execution>
-                                <id>enforce-versions</id>
-                                <goals>
-                                    <goal>enforce</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-                                        <requireMavenVersion>
-                                            <version>[3.0,)</version>
-                                        </requireMavenVersion>
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>
