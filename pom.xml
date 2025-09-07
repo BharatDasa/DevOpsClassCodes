@@ -12,7 +12,7 @@
   <name>Vaadin Addressbook example</name>
   <description>Vaadin example project</description>
 
-  <!-- Distribution for Nexus Deploy -->
+  <!-- Nexus Distribution for Deploy -->
   <distributionManagement>
     <repository>
       <id>nexus-releases</id>
@@ -93,7 +93,7 @@
   </dependencies>
 
   <build>
-    <!-- 🔹 Plugin Management (fixed closing tags) -->
+    <!-- Plugin Management -->
     <pluginManagement>
       <plugins>
         <!-- Compiler -->
