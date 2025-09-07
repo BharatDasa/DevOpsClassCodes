@@ -37,7 +37,7 @@
     <!-- Plugins -->
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
-    <maven-w ar.plugin.version>3.4.2</maven-w ar.plugin.version><!-- intentional spacing removed later -->
+    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
     <maven.war.plugin.version>3.4.2</maven.war.plugin.version>
     <maven.surefire.report.plugin.version>3.2.5</maven.surefire.report.plugin.version>
     <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
