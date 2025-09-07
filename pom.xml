@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.edurekademo.tutorial</groupId>
     <artifactId>addressbook</artifactId>
-    <version>2.0</version>
     <packaging>war</packaging>
+    <version>2.0</version>
     <name>Vaadin Addressbook example</name>
 
     <!-- ==================== DISTRIBUTION MANAGEMENT ==================== -->
@@ -31,6 +32,8 @@
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <jacoco.version>0.7.2.201409121644</jacoco.version>
+        <cobertura.version>2.1.1</cobertura.version>
     </properties>
 
     <!-- ==================== REPOSITORIES ==================== -->
@@ -158,7 +161,7 @@
         </dependency>
     </dependencies>
 
-    <!-- ==================== BUILD PLUGINS ==================== -->
+    <!-- ==================== BUILD ==================== -->
     <build>
         <finalName>addressbook</finalName>
         <plugins>
@@ -168,12 +171,12 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
-            <!-- WAR Packaging -->
+            <!-- WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -199,21 +202,39 @@
                 </configuration>
             </plugin>
 
-            <!-- Jetty for testing -->
+            <!-- Jetty for local testing -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.3.v20140905</version>
             </plugin>
 
-            <!-- Deploy plugin explicitly configured -->
+            <!-- Deploy -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.1.2</version>
-                <configuration>
-                    <skip>false</skip>
-                </configuration>
+            </plugin>
+
+            <!-- Jacoco -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -226,11 +247,42 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>2.19.1</version>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.4.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
         </plugins>
     </reporting>
 
     <!-- ==================== PROFILES ==================== -->
     <profiles>
+        <!-- Development profile -->
         <profile>
             <id>development</id>
             <activation>
@@ -238,6 +290,7 @@
             </activation>
         </profile>
 
+        <!-- Metrics / code quality profile -->
         <profile>
             <id>metrics</id>
             <build>
@@ -246,33 +299,45 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>3.2</version>
-                        <configuration>
-                            <targetJdk>1.8</targetJdk>
-                            <aggregate>true</aggregate>
-                            <format>xml</format>
-                            <minimumTokens>20</minimumTokens>
-                            <failOnViolation>true</failOnViolation>
-                            <failurePriority>2</failurePriority>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>findbugs-maven-plugin</artifactId>
                         <version>2.4.0</version>
-                        <configuration>
-                            <effort>Max</effort>
-                            <xmlOutput>true</xmlOutput>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
 
+        <!-- Maven 3 Enforcer profile -->
         <profile>
             <id>maven3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>1.0</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Maven2 profile for legacy builds -->
+        <profile>
+            <id>maven2</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>1.0</version>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
