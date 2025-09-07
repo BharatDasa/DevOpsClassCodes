@@ -1,103 +1,56 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.edurekademo.tutorial</groupId>
   <artifactId>addressbook</artifactId>
-  <packaging>war</packaging>
   <version>2.0</version>
-  <name>Vaadin Addressbook example</name>
-  <description>Vaadin Addressbook example (modernized POM with QA and reporting)</description>
-  <url>http://maven.apache.org</url>
+  <packaging>war</packaging>
 
-  <!-- DISTRIBUTION: adjust to your Nexus host; left as your original working host -->
+  <name>Vaadin Addressbook example</name>
+  <description>Vaadin example project</description>
+
+  <!-- Distribution for Nexus Deploy -->
   <distributionManagement>
     <repository>
       <id>nexus-releases</id>
-      <url>http://192.168.56.107:8081/repository/maven-releases/</url>
+      <url>http://192.168.56.105:8081/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
       <id>nexus-snapshots</id>
-      <url>http://192.168.56.107:8081/repository/maven-snapshots/</url>
+      <url>http://192.168.56.105:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
   <properties>
-    <!-- Java / build -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- Libraries -->
+    <!-- Versions -->
     <vaadin.version>8.14.3</vaadin.version>
-
-    <!-- Plugin versions (modern, stable) -->
+    <jetty.plugin.version>9.4.53.v20231009</jetty.plugin.version>
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
-    <maven.war.plugin.version>3.4.2</maven.war.plugin.version>
-    <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
-    <jacoco.plugin.version>0.8.10</jacoco.plugin.version>
-    <spotbugs.plugin.version>4.8.2</spotbugs.plugin.version>
-    <pmd.plugin.version>3.20.0</pmd.plugin.version>
-    <checkstyle.plugin.version>3.2.0</checkstyle.plugin.version>
-    <enforcer.plugin.version>3.4.0</enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.1.2</maven.deploy.plugin.version>
-    <jetty.plugin.version>9.4.53.v20231009</jetty.plugin.version>
-
-    <!-- reporting -->
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <!-- coverage thresholds -->
-    <jacoco.minimum.coverage>0.0</jacoco.minimum.coverage> <!-- change as needed -->
+    <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+    <jacoco.version>0.8.12</jacoco.version>
+    <checkstyle.version>10.17.0</checkstyle.version>
+    <spotbugs.version>4.8.3.0</spotbugs.version>
+    <pmd.version>3.21.2</pmd.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>vaadin-prereleases</id>
-      <name>Vaadin Pre-releases</name>
-      <url>https://maven.vaadin.com/vaadin-prereleases</url>
-    </repository>
-
-    <repository>
-      <id>vaadin-addons</id>
-      <name>Vaadin Addons</name>
-      <url>https://maven.vaadin.com/vaadin-addons</url>
-    </repository>
-
-    <repository>
-      <id>vaadin-snapshots</id>
-      <name>Vaadin Snapshots on OSS</name>
-      <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>vaadin-snapshots-plugins</id>
-      <name>Vaadin plugin snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
-    <!-- Vaadin (compatibility packages if your code expects them) -->
+    <!-- Vaadin -->
     <dependency>
       <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-compatibility-server</artifactId>
+      <artifactId>vaadin-server</artifactId>
       <version>${vaadin.version}</version>
     </dependency>
     <dependency>
       <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-compatibility-shared</artifactId>
-      <version>${vaadin.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-compatibility-client-compiled</artifactId>
+      <artifactId>vaadin-client-compiled</artifactId>
       <version>${vaadin.version}</version>
     </dependency>
     <dependency>
@@ -106,71 +59,31 @@
       <version>${vaadin.version}</version>
     </dependency>
 
-    <!-- Servlet API (provided by container) -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- commons -->
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <version>1.9.4</version>
-    </dependency>
-
-    <!-- logging: slf4j + log4j2 binding -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.2</version>
-    </dependency>
+    <!-- Logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.17.2</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.2</version>
+      <version>2.22.1</version>
     </dependency>
 
-    <!-- HTTP client replacement for old commons-httpclient -->
+    <!-- Apache commons -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.14.0</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.14</version>
     </dependency>
 
-    <!-- JSON, Jackson (keep jackson if used) -->
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20230227</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.jaxrs</groupId>
-      <artifactId>jackson-jaxrs-json-provider</artifactId>
-      <version>2.14.2</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- XML security if your code needs it -->
-    <dependency>
-      <groupId>org.apache.santuario</groupId>
-      <artifactId>xmlsec</artifactId>
-      <version>2.3.0</version>
-    </dependency>
-
-    <!-- Logging for tests -->
+    <!-- Testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -180,8 +93,7 @@
   </dependencies>
 
   <build>
-    <finalName>addressbook</finalName>
-
+    <!-- 🔹 Plugin Management (fixed closing tags) -->
     <pluginManagement>
       <plugins>
         <!-- Compiler -->
@@ -196,28 +108,14 @@
           </configuration>
         </plugin>
 
-        <!-- Surefire -->
+        <!-- Unit Test -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin.version}</version>
-          <configuration>
-            <parallel>methods</parallel>
-            <threadCount>4</threadCount>
-            <includes>
-              <include>**/Test*.java</include>
-              <include>**/*Test.java</include>
-              <include>**/*TestCase.java</include>
-            </includes>
-            <excludes>
-              <exclude>**/*Abstract*Test.java</exclude>
-            </excludes>
-            <!-- configure to print summary -->
-            <printSummary>true</printSummary>
-          </configuration>
         </plugin>
 
-        <!-- WAR plugin -->
+        <!-- WAR packaging -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
@@ -226,133 +124,92 @@
             <failOnMissingWebXml>false</failOnMissingWebXml>
           </configuration>
         </plugin>
-
-        <!-- JaCoCo for coverage -->
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>${jacoco.plugin.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>prepare-agent</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>report</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>report</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- SpotBugs (replacement for FindBugs) -->
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.plugin.version}</version>
-          <configuration>
-            <effort>Max</effort>
-            <threshold>Low</threshold>
-            <xmlOutput>true</xmlOutput>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- PMD -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>${pmd.plugin.version}</version>
-          <configuration>
-            <targetJdk>${maven.compiler.target}</targetJdk>
-            <minimumTokens>100</minimumTokens>
-            <failOnViolation>true</failOnViolation>
-          </configuration>
-        </plugin>
-
-        <!-- Checkstyle -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${checkstyle.plugin.version}</version>
-          <configuration>
-            <consoleOutput>true</consoleOutput>
-            <failOnViolation>false</failOnViolation> <!-- set true to fail build on style issues -->
-            <!-- you can add your checkstyle.xml under config/ or adjust as needed -->
-          </configuration>
-        </plugin>
-
-        <!-- Enforcer -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${enforcer.plugin.version}</version>
-          <executions>
-            <execution>
-              <id>enforce-maven</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireMavenVersion>
-                    <version>[3.0,)</version>
-                  </requireMavenVersion>
-                </rules>
-                <fail>true</fail>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Jetty plugin (for local dev runs) -->
-        <plugin>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>${jetty.plugin.version}</version>
-        </plugin>
-
-        <!-- Deploy plugin -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven.deploy.plugin.version}</version>
-        </plugin>
-
-        <!-- Site plugin (reporting) -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${maven.site.plugin.version}</version>
-        </plugin>
-
       </plugins>
-    </plugins>
     </pluginManagement>
 
-    <!-- Active plugins (default executions) -->
     <plugins>
-      <!-- Bind the important plugins into the lifecycle here so they run by default -->
+      <!-- Compiler -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+      <!-- Unit Test -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+
+      <!-- WAR packaging -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+      <!-- JaCoCo -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
+      <!-- Checkstyle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- SpotBugs -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.version}</version>
+      </plugin>
+
+      <!-- PMD -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+      </plugin>
+
+      <!-- Jetty -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.plugin.version}</version>
+        <configuration>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <webApp>
+            <contextPath>/</contextPath>
+          </webApp>
+        </configuration>
       </plugin>
     </plugins>
-
   </build>
 
   <!-- Reporting -->
@@ -363,173 +220,52 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>3.6.1</version>
       </plugin>
-
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.plugin.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.plugin.version}</version>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.2.5</version>
+        <version>${maven.surefire.plugin.version}</version>
       </plugin>
-
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${maven.site.plugin.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmd.plugin.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.plugin.version}</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.version}</version>
       </plugin>
     </plugins>
   </reporting>
 
-  <!-- Profiles (kept to match original intent but updated) -->
+  <!-- Profiles -->
   <profiles>
-    <!-- development active by default -->
     <profile>
-      <id>development</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-
-    <!-- metrics profile: run QA plugins and fail build on issues -->
-    <profile>
-      <id>metrics</id>
-      <build>
-        <plugins>
-          <!-- PMD -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>${pmd.plugin.version}</version>
-            <executions>
-              <execution>
-                <phase>verify</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <!-- SpotBugs -->
-          <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>${spotbugs.plugin.version}</version>
-            <executions>
-              <execution>
-                <phase>verify</phase>
-                <goals>
-                  <goal>spotbugs</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <!-- JaCoCo verify -->
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>jacoco-check</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <rule>
-                      <element>BUNDLE</element>
-                      <limits>
-                        <limit>
-                          <counter>INSTRUCTION</counter>
-                          <value>COVEREDRATIO</value>
-                          <minimum>${jacoco.minimum.coverage}</minimum>
-                        </limit>
-                      </limits>
-                    </rule>
-                  </rules>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <!-- Checkstyle configured to run in metrics -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>${checkstyle.plugin.version}</version>
-            <executions>
-              <execution>
-                <phase>verify</phase>
-                <goals><goal>check</goal></goals>
-              </execution>
-            </executions>
-          </plugin>
-
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- maven3 profile - stays active by default (you are on Maven 3) -->
-    <profile>
-      <id>maven3</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+      <id>dev</id>
+      <properties>
+        <env>dev</env>
+      </properties>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>${enforcer.plugin.version}</version>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>${maven.site.plugin.version}</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
     </profile>
 
-    <!-- maven2 profile kept for backward compatibility (rarely used) -->
     <profile>
-      <id>maven2</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>2.1.1</version>
-          </plugin>
-        </plugins>
-      </build>
+      <id>prod</id>
+      <properties>
+        <env>prod</env>
+      </properties>
     </profile>
-
   </profiles>
 
+  <repositories>
+    <repository>
+      <id>vaadin-addons</id>
+      <url>https://maven.vaadin.com/vaadin-addons</url>
+    </repository>
+    <repository>
+      <id>vaadin-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+    </repository>
+  </repositories>
 </project>
