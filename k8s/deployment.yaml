@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addressbook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: addressbook
+  template:
+    metadata:
+      labels:
+        app: addressbook
+    spec:
+      imagePullSecrets:
+      - name: nexus-pull-secret
+      containers:
+      - name: addressbook
+        image: 192.168.56.11:8082/addressbook:latest
+        ports:
+        - containerPort: 8080
