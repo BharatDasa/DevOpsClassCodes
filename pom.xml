@@ -22,12 +22,21 @@
   </snapshotRepository>
 </distributionManagement>	
 
-    <properties>
+  <!--  <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <vaadin.version>8.0.0.alpha2</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-    </properties>
+    </properties> -->
+
+<properties>
+    <revision>1.0.0</revision>   <!-- DEFAULT VALUE -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <vaadin.version>8.0.0.alpha2</vaadin.version>
+    <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+</properties>
+	
 	
     <repositories>
         <repository>
