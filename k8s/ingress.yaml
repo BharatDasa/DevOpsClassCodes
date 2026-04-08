@@ -3,18 +3,12 @@ kind: Ingress
 metadata:
   name: addressbook
   namespace: addressbook
-
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-
 spec:
   ingressClassName: nginx
-
   tls:
     - hosts:
         - addressbook.192.168.56.100.nip.io
       secretName: wildcard-tls
-
   rules:
     - host: addressbook.192.168.56.100.nip.io
       http:
