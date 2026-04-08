@@ -11,8 +11,7 @@ spec:
 
   selector:
     app: addressbook
-
+    
   ports:
-    - name: http
-      port: 80
-      targetPort: 8080
+  - port: 80
+    targetPort: 8080
