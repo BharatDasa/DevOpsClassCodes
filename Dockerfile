@@ -2,7 +2,8 @@ FROM tomcat:11-jdk17
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
+#COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY target/*.war /usr/local/tomcat/webapps/addressbook.war
 
 EXPOSE 8080
 
