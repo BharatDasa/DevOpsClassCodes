@@ -16,6 +16,6 @@ spec:
       - name: nexus-pull-secret
       containers:
       - name: addressbook
-        image: 192.168.56.11:8082/addressbook:latest
+        image: 192.168.56.11:8082/repository/docker-hosted/addressbook:latest
         ports:
         - containerPort: 8080
