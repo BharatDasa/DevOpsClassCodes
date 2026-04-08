@@ -44,22 +44,6 @@ spec:
               cpu: "500m"
               memory: "512Mi"
 
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            failureThreshold: 3
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 3
-
           lifecycle:
             preStop:
               exec:
