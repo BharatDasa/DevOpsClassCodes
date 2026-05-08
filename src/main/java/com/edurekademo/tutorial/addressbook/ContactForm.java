@@ -29,7 +29,7 @@ public class ContactForm extends FormLayout {
     TextField lastName = new TextField("Last_Name");
     TextField phone = new TextField("TelePhone");
     TextField email = new TextField("Email_ID");
-    DateField birthDate = new DateField("DOB");
+    DateField birthDate = new DateField("Date_Of_Birth");
 
     Contact contact;
 
