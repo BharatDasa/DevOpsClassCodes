@@ -331,6 +331,7 @@ This repository is part of a larger Enterprise Platform Engineering portfolio.
 
                                   Slack
 ```
+<img width="1536" height="1024" alt="CI-CD" src="https://github.com/user-attachments/assets/b3aa3356-9955-4dfa-a7c7-6dc236df6eae" />
 
 ---
 
